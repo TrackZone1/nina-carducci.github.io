@@ -69,11 +69,9 @@
             $.fn.mauGallery.methods.filterByTag
         );
         $(".gallery").on("click", ".mg-prev", () => {
-            console.log(options.lightboxId);
             $.fn.mauGallery.methods.prevImage(options.lightboxId);
         });
         $(".gallery").on("click", ".mg-next", () => {
-            console.log(options.lightboxId);
             $.fn.mauGallery.methods.nextImage(options.lightboxId);
         });
     };
@@ -172,14 +170,29 @@
         },
         nextImage() {
             let activeImage = null;
-            $("img.gallery-item").each(function () {
-                if ($(this).attr("src") === $(".lightboxImage").attr("src")) {
-                    activeImage = $(this);
+
+            const arrayPictures = $("img.gallery-item");
+
+            const arrayPicturesFiltered = arrayPictures.filter(function () {
+                return $(this).css("display") !== "none";
+            });
+
+            console.log(arrayPicturesFiltered);
+
+            arrayPicturesFiltered.each(function (item) {
+                console.log(`[${item}]`, $(this).attr("src"));
+                if (
+                    arrayPicturesFiltered.attr("src") ===
+                    $(".lightboxImage").attr("src")
+                ) {
+                    activeImage = arrayPicturesFiltered[item + 1];
                 }
             });
+
             let activeTag = $(".tags-bar span.active-tag").data(
                 "images-toggle"
             );
+
             let imagesCollection = [];
             if (activeTag === "all") {
                 $(".item-column").each(function () {
