@@ -130,11 +130,26 @@
         },
         prevImage() {
             let activeImage = null;
-            $("img.gallery-item").each(function () {
-                if ($(this).attr("src") === $(".lightboxImage").attr("src")) {
-                    activeImage = $(this);
+
+            const arrayPictures = document.querySelectorAll(".item-column");
+
+            const arrayFilters = [];
+
+            arrayPictures.forEach((element) => {
+                if (element.style.display !== "none") {
+                    arrayFilters.push(element);
                 }
             });
+
+            arrayFilters.forEach((element, i) => {
+                const img = element.querySelector("img");
+                if (
+                    img.getAttribute("src") === $(".lightboxImage").attr("src")
+                ) {
+                    activeImage = arrayFilters[i - 1].querySelector("img");
+                }
+            });
+
             let activeTag = $(".tags-bar span.active-tag").data(
                 "images-toggle"
             );
@@ -171,21 +186,22 @@
         nextImage() {
             let activeImage = null;
 
-            const arrayPictures = $("img.gallery-item");
+            const arrayPictures = document.querySelectorAll(".item-column");
 
-            const arrayPicturesFiltered = arrayPictures.filter(function () {
-                return $(this).css("display") !== "none";
+            const arrayFilters = [];
+
+            arrayPictures.forEach((element) => {
+                if (element.style.display !== "none") {
+                    arrayFilters.push(element);
+                }
             });
 
-            console.log(arrayPicturesFiltered);
-
-            arrayPicturesFiltered.each(function (item) {
-                console.log(`[${item}]`, $(this).attr("src"));
+            arrayFilters.forEach((element, i) => {
+                const img = element.querySelector("img");
                 if (
-                    arrayPicturesFiltered.attr("src") ===
-                    $(".lightboxImage").attr("src")
+                    img.getAttribute("src") === $(".lightboxImage").attr("src")
                 ) {
-                    activeImage = arrayPicturesFiltered[item + 1];
+                    activeImage = arrayFilters[i + 1].querySelector("img");
                 }
             });
 
